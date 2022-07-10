@@ -4,7 +4,6 @@ if (!require(devtools)) install.packages("devtools")
 library(devtools)
 install_github("joaobtj/hydirrig")
 library(hydirrig)
-
 ```
 
 # Projeto de irrigação
@@ -24,10 +23,10 @@ Netafim Streamline 16100
 Valores presentes no catálogo, mas vale a pena fazer a conferência.
 
 ```{r}
-h <- c(6,7,8,9,10)
-q <- c(0.56,0.61,0.65,0.68,0.72)
+h <- c(6, 7, 8, 9, 10)
+q <- c(0.56, 0.61, 0.65, 0.68, 0.72)
 
-hydirrig::coef_emitter(h, q) 
+hydirrig::coef_emitter(h, q)
 ```
 
 
@@ -39,15 +38,15 @@ hydirrig::coef_emitter(h, q)
 do.call(
   hydirrig::lateral_head,
   list(
-    q_req_lateral = 0.56/3600000, #vazão média requerida nos emissores
-    d_lateral = 0.01620, #diâmetro da linha lateral
-    s_lateral = 0.40, #espaçamento entre emissores na linha lateral
-    s_ini_lateral = 0.40, #espaçamento inicial da linha lateral
-    n_lateral = 255, #número de emissores na linha lateral
-    dec_lateral = 0.00, #declividade da linha lateral; negativo para declive
-    coef_em = 0.238/3600000, #coeficiente do emissor
-    exp_em = 0.48, #expoente do emissor
-    rc = 1e-05 #coeficiente de rugosidade
+    q_req_lateral = 0.56 / 3600000, # vazão média requerida nos emissores
+    d_lateral = 0.01620, # diâmetro da linha lateral
+    s_lateral = 0.40, # espaçamento entre emissores na linha lateral
+    s_ini_lateral = 0.40, # espaçamento inicial da linha lateral
+    n_lateral = 255, # número de emissores na linha lateral
+    dec_lateral = 0.00, # declividade da linha lateral; negativo para declive
+    coef_em = 0.238 / 3600000, # coeficiente do emissor
+    exp_em = 0.48, # expoente do emissor
+    rc = 1e-05 # coeficiente de rugosidade
   )
 )
 ```
@@ -59,24 +58,22 @@ do.call(
 do.call(
   hydirrig::subunit_head_diameter,
   list(
-    q_req_subunit = 0.56/3600000, #vazão média requerida nos emissores 
-    q_var_subunit = 10, #variação de vazão máxima na subunidade
-    s_manifold = c(0.30,0.30,0.70), #padrão de espaçamento das linhas laterais
-    s_ini_manifold = 0.70, #espaçamento inicial da linha de derivação
-    n_manifold = 171, #número de linhas laterais
-    dec_manifold = 0, #declividade da linha de derivação
+    q_req_subunit = 0.56 / 3600000, # vazão média requerida nos emissores
+    q_var_subunit = 10, # variação de vazão máxima na subunidade
+    s_manifold = c(0.30, 0.30, 0.70), # padrão de espaçamento das linhas laterais
+    s_ini_manifold = 0.70, # espaçamento inicial da linha de derivação
+    n_manifold = 171, # número de linhas laterais
+    dec_manifold = 0, # declividade da linha de derivação
     d_lateral = 0.01620,
     s_lateral = 0.40,
     s_ini_lateral = 0.40,
     n_lateral = 255,
     dec_lateral = 0.00,
-    coef_em = 0.238/3600000,
+    coef_em = 0.238 / 3600000,
     exp_em = 0.48,
     rc = 1e-05
   )
 )
-
-
 ```
 
 
@@ -90,25 +87,24 @@ Linha Amanco ERR móvel
 * e = 2,1 mm
 * Di = 71,3 mm
 
-```{r}
+```{r, cache=TRUE}
 do.call(
   hydirrig::subunit_head,
   list(
-    q_req_subunit = 0.56/3600000,
-    d_manifold = 0.0713, #diâmetro comercial da linha de derivação (diâmetro interno)
-    s_manifold =c(0.30,0.30,0.70),
-    s_ini_manifold =0.70,
-    n_manifold =171,
-    dec_manifold =0.00,
-    d_lateral =0.01620,
-    s_lateral =0.40,
-    s_ini_lateral =0.40,
-    n_lateral =255,
+    q_req_subunit = 0.56 / 3600000,
+    d_manifold = 0.0713, # diâmetro comercial da linha de derivação (diâmetro interno)
+    s_manifold = c(0.30, 0.30, 0.70),
+    s_ini_manifold = 0.70,
+    n_manifold = 171,
+    dec_manifold = 0.00,
+    d_lateral = 0.01620,
+    s_lateral = 0.40,
+    s_ini_lateral = 0.40,
+    n_lateral = 255,
     dec_lateral = 0.00,
-    coef_em =0.238/3600000,
-    exp_em =0.48,
+    coef_em = 0.238 / 3600000,
+    exp_em = 0.48,
     rc = 1e-05
   )
 )
 ```
-
