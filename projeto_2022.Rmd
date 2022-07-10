@@ -1,0 +1,114 @@
+```{r, include=FALSE}
+## instalar o pacote
+if (!require(devtools)) install.packages("devtools")
+library(devtools)
+install_github("joaobtj/hydirrig")
+library(hydirrig)
+
+```
+
+# Projeto de irrigação
+
+
+## Emissor 
+ 
+Netafim Streamline 16100
+
+* Vazão nominal = 0,72 L/H (a 10 mca)
+* Pressão de serviço = 6 mca
+* Vazão de serviço = 0,56 L/h
+ 
+ 
+### Cálculo do coeficiente e expoente do gotejador 
+
+Valores presentes no catálogo, mas vale a pena fazer a conferência.
+
+```{r}
+h <- c(6,7,8,9,10)
+q <- c(0.56,0.61,0.65,0.68,0.72)
+
+hydirrig::coef_emitter(h, q) 
+```
+
+
+## Dimensionamento da subunidade
+
+### Verificação da linha lateral: q_var_lateral << 10%
+
+```{r, cache=TRUE}
+do.call(
+  hydirrig::lateral_head,
+  list(
+    q_req_lateral = 0.56/3600000, #vazão média requerida nos emissores
+    d_lateral = 0.01620, #diâmetro da linha lateral
+    s_lateral = 0.40, #espaçamento entre emissores na linha lateral
+    s_ini_lateral = 0.40, #espaçamento inicial da linha lateral
+    n_lateral = 255, #número de emissores na linha lateral
+    dec_lateral = 0.00, #declividade da linha lateral; negativo para declive
+    coef_em = 0.238/3600000, #coeficiente do emissor
+    exp_em = 0.48, #expoente do emissor
+    rc = 1e-05 #coeficiente de rugosidade
+  )
+)
+```
+
+### Determinação do diâmetro da linha de derivação
+
+```{r, cache=TRUE}
+
+do.call(
+  hydirrig::subunit_head_diameter,
+  list(
+    q_req_subunit = 0.56/3600000, #vazão média requerida nos emissores 
+    q_var_subunit = 10, #variação de vazão máxima na subunidade
+    s_manifold = c(0.30,0.30,0.70), #padrão de espaçamento das linhas laterais
+    s_ini_manifold = 0.70, #espaçamento inicial da linha de derivação
+    n_manifold = 171, #número de linhas laterais
+    dec_manifold = 0, #declividade da linha de derivação
+    d_lateral = 0.01620,
+    s_lateral = 0.40,
+    s_ini_lateral = 0.40,
+    n_lateral = 255,
+    dec_lateral = 0.00,
+    coef_em = 0.238/3600000,
+    exp_em = 0.48,
+    rc = 1e-05
+  )
+)
+
+
+```
+
+
+### Determinar a pressão com o diâmetro comercial: Di = 71,3 mm
+
+Linha Amanco ERR móvel
+
+* PN 60
+* DN = 75 mm = 3"
+* De = 75,5 mm
+* e = 2,1 mm
+* Di = 71,3 mm
+
+```{r}
+do.call(
+  hydirrig::subunit_head,
+  list(
+    q_req_subunit = 0.56/3600000,
+    d_manifold = 0.0713, #diâmetro comercial da linha de derivação (diâmetro interno)
+    s_manifold =c(0.30,0.30,0.70),
+    s_ini_manifold =0.70,
+    n_manifold =171,
+    dec_manifold =0.00,
+    d_lateral =0.01620,
+    s_lateral =0.40,
+    s_ini_lateral =0.40,
+    n_lateral =255,
+    dec_lateral = 0.00,
+    coef_em =0.238/3600000,
+    exp_em =0.48,
+    rc = 1e-05
+  )
+)
+```
+
