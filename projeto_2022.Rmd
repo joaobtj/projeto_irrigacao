@@ -108,3 +108,28 @@ do.call(
   )
 )
 ```
+
+
+## Dimensionamento da linha principal
+
+* Vazão: q_ini_manifold = 0,006772842 m3/s
+* Pressão: h_ini_manifold = 6,703057 mca
+
+### Diâmetro da linha principal
+
+```{r}
+(D <- sqrt((4 * 0.006772842) / (2 * pi)))
+```
+
+Diâmetro comercial: mesmo da linha de derivação = 71,3 mm
+
+### Perda de carga na linha principal
+
+Comprimento = 408 m
+
+```{r}
+hydirrig::head_loss(d = 0.0713, 
+                    q = 0.006772842, 
+                    l = 408, 
+                    rc = 1e-05)
+```
